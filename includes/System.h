@@ -26,38 +26,41 @@ struct func_in {
 
 // define output struct for loss (L)
 struct L_out {
-    double L;
-    MatrixXd Lx;
-    MatrixXd Lxx;
-    MatrixXd Lu;
-    MatrixXd Luu;
+    double L; // cost value
+    MatrixXd Lx; // grad_x L
+    MatrixXd Lxx; // grad^2_x L
+    MatrixXd Lu; // grad_u L
+    MatrixXd Luu; // grad^2_u L
 };
 
 class System {
 private:
-    double Ceiling_H;
-    double tf;
-    int N_seg;
-    double dt;
-    MatrixXd Q;
-    MatrixXd R;
-    MatrixXd Qf;
-    f_out f_func(func_in in_struct);
-    L_out L_func(func_in in_struct);
+    double Ceiling_H; // ceiling height
+    double tf; // time horizon
+    int N_seg; // number of time segments
+    double dt; // time step
+    MatrixXd Q; // running cost matrix on states
+    MatrixXd R; // running cost matrix on controls
+    MatrixXd Qf; // terminal cost matrix on states (or state errors)
+    f_out f_func(func_in in_struct); // dynamics
+    L_out L_func(func_in in_struct); // loss
 
     double mu;
-    std::vector<double> xd;
-    std::vector<double> xmin;
-    std::vector<double> xmax;
+    std::vector<double> xd; // desired states at end
+    std::vector<double> xmin; // minimum values for states
+    std::vector<double> xmax; // maximum values for states
     double lambda;
     // some struct vector to hold some obstacles
     double ko;
-    std::vector<double> umin;
-    std::vector<double> umax;
+    std::vector<double> umin; // minimum values for controls
+    std::vector<double> umax; // maximum values for controls
 
 public:
+    // publicly call the dynamics
     f_out f(func_in in_struct) {return f_func(in_struct);}
+    // publicly call the loss
     L_out L(func_in in_struct) {return L_func(in_struct);}
+    // setters
     void setTf(double new_tf) {tf = new_tf;}
     void setN(int new_N) {N_seg = new_N; if (tf!=0) dt=tf/N_seg;}
 };
