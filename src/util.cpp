@@ -5,8 +5,10 @@
 #include "util.h"
 #include "System.h"
 
-f_out f(float x){
+f_out f(func_in in_struct){
+    float tmp = in_struct.x.at(0);
+
     f_out ret;
-    ret.x.push_back(3.0);
+    ret.x.push_back(tmp);
     return ret;
 }

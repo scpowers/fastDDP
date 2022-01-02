@@ -15,7 +15,10 @@ int main()
     System S;
     // adding a simple lambda func for f attribute (dynamics)
     S.setf(f);
-    f_out y = S.f(4);
+
+    func_in func_in_test;
+    func_in_test.x.push_back(3.5);
+    f_out y = S.f(func_in_test);
     std::cout << y.x.at(0) << std::endl;
 
     return 0;
