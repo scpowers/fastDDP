@@ -3,7 +3,10 @@
 //
 
 #include "util.h"
+#include "System.h"
 
-float f(float x){
-    return 4.5*x;
+f_out f(float x){
+    f_out ret;
+    ret.x.push_back(3.0);
+    return ret;
 }

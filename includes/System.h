@@ -9,34 +9,43 @@
 
 using Eigen::MatrixXd;
 
+// define output struct for dynamics (f)
+struct f_out {
+    std::vector<float> x;
+    MatrixXd A;
+    MatrixXd B;
+};
+
+// define input struct for dynamics (f) and loss (L)
+
 class System {
 private:
     float Ceiling_H;
     float tf;
-    float N_seg;
+    int N_seg;
     float dt;
     MatrixXd Q;
     MatrixXd R;
     MatrixXd Qf;
     //std::function<auto(_some_local_struct_)> f;
-    std::function<float(float x)> f_func;
+    std::function<f_out(float x)> f_func;
     //std::function<auto(_some_local_struct_)> L_func;
     //std::function<auto(_some_local_struct_)> Lf_func;
-    float mu;
-    std::vector<float> xd;
-    std::vector<float> xmin;
-    std::vector<float> xmax;
-    float lambda;
+    double mu;
+    std::vector<double> xd;
+    std::vector<double> xmin;
+    std::vector<double> xmax;
+    double lambda;
     // some struct vector to hold some obstacles
-    float ko;
-    std::vector<float> umin;
-    std::vector<float> umax;
+    double ko;
+    std::vector<double> umin;
+    std::vector<double> umax;
 
-    std::function<float(float)> getf() {return f_func;}
+    std::function<f_out(float)> getf() {return f_func;}
 
 public:
-    void setf(std::function<float(float)> func) { f_func = func; }
-    float f(float x) {std::function<float(float)> fcall = getf(); return fcall(x);}
+    void setf(std::function<f_out(float)> func) { f_func = func; }
+    f_out f(float x) {std::function<f_out(float)> fcall = getf(); return fcall(x);}
 };
 
 

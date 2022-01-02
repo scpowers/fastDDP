@@ -4,7 +4,8 @@
 
 #ifndef FASTDDP_UTIL_H
 #define FASTDDP_UTIL_H
+#include "System.h"
 
-float f(float);
+f_out f(float);
 
 #endif //FASTDDP_UTIL_H

@@ -15,8 +15,8 @@ int main()
     System S;
     // adding a simple lambda func for f attribute (dynamics)
     S.setf(f);
-    float y = S.f(4);
-    std::cout << "4 * 4.5 = " << y << std::endl;
+    f_out y = S.f(4);
+    std::cout << y.x.at(0) << std::endl;
 
     return 0;
 }
