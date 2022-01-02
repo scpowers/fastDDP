@@ -2,6 +2,7 @@
 #define FASTDDP_SYSTEM_H
 #include <Eigen/Dense>
 #include <vector>
+#include <tuple>
 
 using Eigen::MatrixXd;
 
@@ -32,7 +33,7 @@ struct L_out {
 // define struct to hold obstacles
 struct obstacle {
     std::string type;
-    std::tuple<double> loc;
+    double loc[3];
     double r;
 };
 
@@ -66,6 +67,10 @@ public:
     // setters
     void setTf(double new_tf) {tf = new_tf;}
     void setN(int new_N) {N_seg = new_N; if (tf!=0) dt=tf/N_seg;}
+    void addObs(obstacle new_obs) {obs.push_back(new_obs);}
+
+    // getters
+    obstacle getObsAt(int i) {return obs.at(i);}
 };
 
 

@@ -5,6 +5,7 @@
 #include <iostream>
 #include <Eigen/Dense>
 #include "includes/System.h"
+#include "includes/util.h"
 
 using Eigen::MatrixXd;
 
@@ -22,6 +23,11 @@ int main()
 
     L_out z = S.L(func_in_test);
     std::cout << z.L << std::endl;
+
+    double loc1[2] = {3.5, 2.5};
+    obstacle o1 = newOverheadHemisphere("OverheadHemisphere", loc1, 1.0);
+    S.addObs(o1);
+    std::cout << S.getObsAt(0).type << std::endl;
 
     return 0;
 }
