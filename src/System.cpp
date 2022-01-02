@@ -9,3 +9,10 @@ f_out System::f_func(func_in in_struct) {
     ret.x.push_back(tmp+dt);
     return ret;
 }
+
+L_out System::L_func(func_in in_struct) {
+
+    L_out ret;
+    ret.L = 25 + dt;
+    return ret;
+}

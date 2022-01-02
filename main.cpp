@@ -21,5 +21,8 @@ int main()
     f_out y = S.f(func_in_test);
     std::cout << y.x.at(0) << std::endl;
 
+    L_out z = S.L(func_in_test);
+    std::cout << z.L << std::endl;
+
     return 0;
 }

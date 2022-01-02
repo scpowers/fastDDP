@@ -24,6 +24,15 @@ struct func_in {
     // needs access to S's variables as well (self)
 };
 
+// define output struct for loss (L)
+struct L_out {
+    double L;
+    MatrixXd Lx;
+    MatrixXd Lxx;
+    MatrixXd Lu;
+    MatrixXd Luu;
+};
+
 class System {
 private:
     double Ceiling_H;
@@ -34,7 +43,7 @@ private:
     MatrixXd R;
     MatrixXd Qf;
     f_out f_func(func_in in_struct);
-
+    L_out L_func(func_in in_struct);
 
     double mu;
     std::vector<double> xd;
@@ -48,6 +57,7 @@ private:
 
 public:
     f_out f(func_in in_struct) {return f_func(in_struct);}
+    L_out L(func_in in_struct) {return L_func(in_struct);}
     void setTf(double new_tf) {tf = new_tf;}
     void setN(int new_N) {N_seg = new_N; if (tf!=0) dt=tf/N_seg;}
 };
