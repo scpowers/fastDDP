@@ -33,5 +33,12 @@ int main()
     std::cout << S.getObsAt(0).type << std::endl;
     std::cout << S.getObsAt(0).r << std::endl;
 
+    // testing overhead hemisphere obstacles
+    double loc2[3] = {3.5, 2.5, 3.5};
+    obstacle o2 = newXYCylinder("XYCylinder", loc2, 1.5);
+    S.addObs(o2);
+    std::cout << S.getObsAt(1).type << std::endl;
+    std::cout << S.getObsAt(1).r << std::endl;
+
     return 0;
 }
