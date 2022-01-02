@@ -6,6 +6,4 @@
 #define FASTDDP_UTIL_H
 #include "System.h"
 
-f_out f(func_in);
-
 #endif //FASTDDP_UTIL_H

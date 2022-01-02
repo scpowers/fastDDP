@@ -13,8 +13,8 @@ int main()
 {
     // checking attributes of S
     System S;
-    // adding a simple lambda func for f attribute (dynamics)
-    S.setf(f);
+    S.setTf(10.0);
+    S.setN(4);
 
     func_in func_in_test;
     func_in_test.x.push_back(3.5);

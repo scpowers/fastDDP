@@ -18,7 +18,7 @@ struct f_out {
 
 // define input struct for dynamics (f) and loss (L)
 struct func_in {
-    int k = 0;
+    int k = 0; // initialize to 0 but will be set in ddp engine call
     std::vector<double> x;
     std::vector<double> u;
     // needs access to S's variables as well (self)
@@ -33,10 +33,9 @@ private:
     MatrixXd Q;
     MatrixXd R;
     MatrixXd Qf;
-    //std::function<auto(_some_local_struct_)> f;
-    std::function<f_out(func_in in_struct)> f_func;
-    //std::function<auto(_some_local_struct_)> L_func;
-    //std::function<auto(_some_local_struct_)> Lf_func;
+    f_out f_func(func_in in_struct);
+
+
     double mu;
     std::vector<double> xd;
     std::vector<double> xmin;
@@ -47,11 +46,10 @@ private:
     std::vector<double> umin;
     std::vector<double> umax;
 
-    std::function<f_out(func_in)> getf() {return f_func;}
-
 public:
-    void setf(std::function<f_out(func_in)> func) { f_func = func; }
-    f_out f(func_in in_struct) {std::function<f_out(func_in)> fcall = getf(); return fcall(in_struct);}
+    f_out f(func_in in_struct) {return f_func(in_struct);}
+    void setTf(double new_tf) {tf = new_tf;}
+    void setN(int new_N) {N_seg = new_N; if (tf!=0) dt=tf/N_seg;}
 };
 
 
