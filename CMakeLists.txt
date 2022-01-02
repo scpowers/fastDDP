@@ -8,6 +8,8 @@ if(NOT EXISTS ${EIGEN_DIR})
     message(FATAL_ERROR "Please check that the set Eigen directory is valid!")
 endif()
 include_directories(${EIGEN_DIR})
+include_directories(includes)
+include_directories(src)
 
 add_executable(fastDDP
-        main.cpp System.cpp System.h util.cpp util.h)
+        main.cpp src/System.cpp includes/System.h src/util.cpp includes/util.h)

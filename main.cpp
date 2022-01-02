@@ -4,8 +4,8 @@
 
 #include <iostream>
 #include <Eigen/Dense>
-#include "System.h"
-#include "util.h"
+#include "includes/System.h"
+#include "includes/util.h"
 
 using Eigen::MatrixXd;
 
