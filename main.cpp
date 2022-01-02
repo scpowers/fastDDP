@@ -17,5 +17,12 @@ int main()
     m(1,1) = m(1,0) + m(0,1);
     std::cout << m << std::endl;
 
+    System S;
+
+    std::function<int(int)> f = [&] (int x) {return 2*x;};
+    S.setf(f);
+    std::function<int(int)> fcheck = S.getf();
+    int y = fcheck(3);
+
     return 0;
 }
