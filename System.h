@@ -19,7 +19,7 @@ private:
     MatrixXd R;
     MatrixXd Qf;
     //std::function<auto(_some_local_struct_)> f;
-    std::function<int(int x)> f;
+    std::function<float(float x)> f_func;
     //std::function<auto(_some_local_struct_)> L;
     //std::function<auto(_some_local_struct_)> Lf;
     float mu;
@@ -32,9 +32,11 @@ private:
     std::vector<float> umin;
     std::vector<float> umax;
 
+    std::function<float(float)> getf() {return f_func;}
+
 public:
-    void setf(std::function<int(int)> func) { f = func; }
-    std::function<int(int)> getf() {return f;}
+    void setf(std::function<float(float)> func) { f_func = func; }
+    float f(float x) {std::function<float(float)> fcall = getf(); return fcall(x);}
 };
 
 
