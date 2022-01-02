@@ -2,7 +2,6 @@
 #define FASTDDP_SYSTEM_H
 #include <Eigen/Dense>
 #include <vector>
-#include <tuple>
 
 using Eigen::MatrixXd;
 
@@ -18,7 +17,6 @@ struct func_in {
     int k = 0; // initialize to 0 but will be set in ddp engine call
     std::vector<double> x;
     std::vector<double> u;
-    // needs access to S's variables as well (self)
 };
 
 // define output struct for loss (L)
