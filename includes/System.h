@@ -1,7 +1,3 @@
-//
-// Created by Spencer Powers on 12/27/21.
-//
-
 #ifndef FASTDDP_SYSTEM_H
 #define FASTDDP_SYSTEM_H
 #include <Eigen/Dense>
@@ -33,6 +29,13 @@ struct L_out {
     MatrixXd Luu; // grad^2_u L
 };
 
+// define struct to hold obstacles
+struct obstacle {
+    std::string type;
+    std::tuple<double> loc;
+    double r;
+};
+
 class System {
 private:
     double Ceiling_H; // ceiling height
@@ -50,7 +53,7 @@ private:
     std::vector<double> xmin; // minimum values for states
     std::vector<double> xmax; // maximum values for states
     double lambda;
-    // some struct vector to hold some obstacles
+    std::vector<obstacle> obs; // vector of obstacles
     double ko;
     std::vector<double> umin; // minimum values for controls
     std::vector<double> umax; // maximum values for controls

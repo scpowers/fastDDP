@@ -12,4 +12,4 @@ include_directories(includes)
 include_directories(src)
 
 add_executable(fastDDP
-        main.cpp src/System.cpp includes/System.h src/util.cpp includes/util.h)
+        main.cpp src/System.cpp includes/System.h)
