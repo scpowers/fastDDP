@@ -10,4 +10,4 @@ endif()
 include_directories(${EIGEN_DIR})
 
 add_executable(fastDDP
-        main.cpp System.cpp System.h)
+        main.cpp System.cpp System.h util.cpp util.h)

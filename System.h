@@ -20,8 +20,8 @@ private:
     MatrixXd Qf;
     //std::function<auto(_some_local_struct_)> f;
     std::function<float(float x)> f_func;
-    //std::function<auto(_some_local_struct_)> L;
-    //std::function<auto(_some_local_struct_)> Lf;
+    //std::function<auto(_some_local_struct_)> L_func;
+    //std::function<auto(_some_local_struct_)> Lf_func;
     float mu;
     std::vector<float> xd;
     std::vector<float> xmin;
