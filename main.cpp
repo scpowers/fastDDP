@@ -14,7 +14,7 @@ int main()
     // checking attributes of S
     System S;
     S.setTf(10.0);
-    S.setN(4);
+    S.setNSeg(4);
 
     // testing dynamics
     func_in func_in_test;

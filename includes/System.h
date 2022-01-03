@@ -40,23 +40,23 @@ struct obstacle {
 
 class System {
 private:
-    double Ceiling_H; // ceiling height
-    double tf; // time horizon
-    int NSeg; // number of time segments
-    double dt; // time step
+    double Ceiling_H = 3.5; // ceiling height
+    double tf = 20; // time horizon
+    int NSeg = 5; // number of time segments
+    double dt = tf/NSeg; // time step
     MatrixXd Q; // running cost matrix on states
     MatrixXd R; // running cost matrix on controls
     MatrixXd Qf; // terminal cost matrix on states (or state errors)
     f_out f_func(func_in in_struct); // dynamics
     L_out L_func(func_in in_struct); // loss
 
-    double mu;
+    double mu = 0;
     VectorXd xd; // desired states at end
     VectorXd xmin; // minimum values for states
     VectorXd xmax; // maximum values for states
-    double lambda;
+    double lambda = 1e4;
     std::vector<obstacle> obs; // vector of obstacles
-    double ko;
+    double ko = 1e5;
     VectorXd umin; // minimum values for controls
     VectorXd umax; // maximum values for controls
 
@@ -66,8 +66,8 @@ public:
     // publicly call the loss
     L_out L(func_in in_struct) {return L_func(in_struct);}
     // setters
-    void setTf(double new_tf) {tf = new_tf;}
-    void setN(int new_N) {NSeg = new_N; if (tf!=0) dt=tf/NSeg;}
+    void setTf(double new_tf) {tf = new_tf; dt=tf/NSeg;}
+    void setNSeg(int new_N) {NSeg = new_N; dt=tf/NSeg;}
     void addObs(obstacle new_obs) {obs.push_back(new_obs);}
 
     // getters
