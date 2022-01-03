@@ -4,10 +4,11 @@
 #include <vector>
 
 using Eigen::MatrixXd;
+using Eigen::VectorXd;
 
 // define output struct for dynamics (f)
 struct f_out {
-    std::vector<double> x;
+    VectorXd x;
     MatrixXd A;
     MatrixXd B;
 };
@@ -15,8 +16,8 @@ struct f_out {
 // define input struct for dynamics (f) and loss (L)
 struct func_in {
     int k = 0; // initialize to 0 but will be set in ddp engine call
-    std::vector<double> x;
-    std::vector<double> u;
+    VectorXd x;
+    VectorXd u;
 };
 
 // define output struct for loss (L)
@@ -39,7 +40,7 @@ class System {
 private:
     double Ceiling_H; // ceiling height
     double tf; // time horizon
-    int N_seg; // number of time segments
+    int NSeg; // number of time segments
     double dt; // time step
     MatrixXd Q; // running cost matrix on states
     MatrixXd R; // running cost matrix on controls
@@ -48,14 +49,14 @@ private:
     L_out L_func(func_in in_struct); // loss
 
     double mu;
-    std::vector<double> xd; // desired states at end
-    std::vector<double> xmin; // minimum values for states
-    std::vector<double> xmax; // maximum values for states
+    VectorXd xd; // desired states at end
+    VectorXd xmin; // minimum values for states
+    VectorXd xmax; // maximum values for states
     double lambda;
     std::vector<obstacle> obs; // vector of obstacles
     double ko;
-    std::vector<double> umin; // minimum values for controls
-    std::vector<double> umax; // maximum values for controls
+    VectorXd umin; // minimum values for controls
+    VectorXd umax; // maximum values for controls
 
 public:
     // publicly call the dynamics
@@ -64,11 +65,12 @@ public:
     L_out L(func_in in_struct) {return L_func(in_struct);}
     // setters
     void setTf(double new_tf) {tf = new_tf;}
-    void setN(int new_N) {N_seg = new_N; if (tf!=0) dt=tf/N_seg;}
+    void setN(int new_N) {NSeg = new_N; if (tf!=0) dt=tf/NSeg;}
     void addObs(obstacle new_obs) {obs.push_back(new_obs);}
 
     // getters
     obstacle getObsAt(int i) {return obs.at(i);}
+    int getNSeg() {return NSeg;}
 };
 
 

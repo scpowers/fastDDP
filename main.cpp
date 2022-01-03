@@ -18,9 +18,13 @@ int main()
 
     // testing dynamics
     func_in func_in_test;
-    func_in_test.x.push_back(3.5);
+    VectorXd x(3);
+    x << 1.5, 3.5, 4.5;
+    std::cout << x << std:: endl;
+    func_in_test.x = x;
+    std::cout << func_in_test.x.size() << std::endl;
     f_out y = S.f(func_in_test);
-    std::cout << y.x.at(0) << std::endl;
+    std::cout << y.x(0) << std::endl;
 
     // testing loss
     L_out z = S.L(func_in_test);
