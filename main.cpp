@@ -4,11 +4,13 @@
 
 #include <iostream>
 #include <Eigen/Dense>
+#include <sciplot/sciplot.hpp>
 #include "includes/System.h"
 #include "includes/util.h"
 
 using std::cout;
 using std::endl;
+namespace plt = sciplot;
 
 const double pi = 3.14159265358979323846;
 
@@ -66,6 +68,9 @@ int main()
     traj_cost_in cost_in = {xs, us, S};
     double J = traj_cost(cost_in);
     cout << "sample trajectory cost: " << J << endl;
+
+    plt::Plot plot;
+
 
     return 0;
 }
