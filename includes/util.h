@@ -4,7 +4,7 @@
 
 using Eigen::MatrixXd;
 
-obstacle newOverheadHemisphere(std::string, double[], double);
+obstacle newOverheadHemisphere(std::string, double[], double, System);
 
 obstacle newXYCylinder(std::string, double[], double);
 

@@ -9,20 +9,20 @@
 
 using Eigen::MatrixXd;
 
+const double pi = 3.14159265358979323846;
+
 int main()
 {
     // checking attributes of S
     System S;
-    S.setTf(10.0);
-    S.setNSeg(4);
+    S.setTf(40);
+    S.setNSeg(64);
 
     // define an x0
-    VectorXd x0(3);
-    x0 << 1.5, 3.5, 4.5;
-    std::cout << "x0:\n" << x0 << std:: endl;
+    VectorXd x0 {{-5, -5, 2.8, 0, 0, 0, 0, pi}};
 
     // add an XY cylinder
-    double loc1[3] = {3.5, 2.5, 3.5};
+    double loc1[3] = {-2, -3};
     obstacle o1 = newXYCylinder("XYCylinder", loc1, 1);
     S.addObs(o1);
 
@@ -31,7 +31,6 @@ int main()
     us.setOnes();
     traj_in input = {x0, us, S};
     MatrixXd traj = generate_traj(input);
-    std::cout << "sample trajectory:\n" << traj << std::endl;
 
     // testing trajectory cost
     traj_cost_in cost_in = {traj, us, S};

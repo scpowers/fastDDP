@@ -71,6 +71,7 @@ public:
     // getters
     obstacle getObsAt(int i) {return obs.at(i);}
     int getNSeg() {return NSeg;}
+    double getCH() {return Ceiling_H;}
 };
 
 // define input struct for generate_traj
