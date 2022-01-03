@@ -37,7 +37,7 @@ struct obstacle {
 };
 
 class System {
-private:
+protected:
     double Ceiling_H = 3.5; // ceiling height
     double tf = 40; // time horizon
     int NSeg = 5; // number of time segments

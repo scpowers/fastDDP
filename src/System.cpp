@@ -3,7 +3,6 @@
 // dynamics definition
 f_out System::f_func(func_in in_struct)
 {
-
     // initialize return struct
     f_out ret;
     VectorXd x(in_struct.x.size()); // make same size as input x

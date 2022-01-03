@@ -1,5 +1,4 @@
 #include "util.h"
-#include <algorithm>
 #include <iterator>
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
