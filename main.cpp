@@ -50,5 +50,10 @@ int main()
     MatrixXd traj = generate_traj(input);
     std::cout << traj << std::endl;
 
+    // testing trajectory cost
+    traj_cost_in cost_in = {traj, us, S};
+    double J = traj_cost(cost_in);
+    std::cout << J << std::endl;
+
     return 0;
 }

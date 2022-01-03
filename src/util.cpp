@@ -31,3 +31,25 @@ MatrixXd generate_traj(traj_in in_struct)
 
     return xs;
 }
+
+double traj_cost(traj_cost_in in_struct)
+{
+    double J = 0; // initialize cost
+    int NSeg = in_struct.S.getNSeg();
+
+    for (int k = 0; k < NSeg; k++)
+    {
+        func_in in;
+        if (k < NSeg-1) // when a control signal exists
+            in = {k, in_struct.xs.col(k), in_struct.us.col(k)};
+        else // after the last control signal
+        {
+            VectorXd u(in_struct.xs.col(k).size());
+            u.setZero();
+            in = {k, in_struct.xs.col(k), u};
+        }
+        L_out out = in_struct.S.L(in);
+        J = J + out.L; // update running cost
+    }
+    return J;
+}

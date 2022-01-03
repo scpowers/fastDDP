@@ -75,11 +75,17 @@ public:
     int getNSeg() {return NSeg;}
 };
 
-// define input struct for generate_tra
+// define input struct for generate_traj
 struct traj_in {
     VectorXd x0;
     MatrixXd us;
     System S;
 };
 
+// define input struct for traj_cost
+struct traj_cost_in {
+    MatrixXd xs;
+    MatrixXd us;
+    System S;
+};
 #endif //FASTDDP_SYSTEM_H

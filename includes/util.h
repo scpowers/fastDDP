@@ -10,4 +10,6 @@ obstacle newXYCylinder(std::string, double[], double);
 
 MatrixXd generate_traj(traj_in);
 
+double traj_cost(traj_cost_in);
+
 #endif //FASTDDP_UTIL_H
