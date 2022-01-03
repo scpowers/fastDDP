@@ -8,6 +8,6 @@ obstacle newOverheadHemisphere(std::string, double[], double);
 
 obstacle newXYCylinder(std::string, double[], double);
 
-MatrixXd generate_traj(std::vector<double>(), std::vector<double>(), System);
+MatrixXd generate_traj(traj_in);
 
 #endif //FASTDDP_UTIL_H

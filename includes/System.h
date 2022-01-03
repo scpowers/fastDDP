@@ -36,6 +36,8 @@ struct obstacle {
     double r;
 };
 
+
+
 class System {
 private:
     double Ceiling_H; // ceiling height
@@ -73,5 +75,11 @@ public:
     int getNSeg() {return NSeg;}
 };
 
+// define input struct for generate_tra
+struct traj_in {
+    VectorXd x0;
+    MatrixXd us;
+    System S;
+};
 
 #endif //FASTDDP_SYSTEM_H

@@ -44,5 +44,11 @@ int main()
     std::cout << S.getObsAt(1).type << std::endl;
     std::cout << S.getObsAt(1).r << std::endl;
 
+    // testing trajectories
+    MatrixXd us(2, S.getNSeg() - 1);
+    traj_in input = {x, us, S};
+    MatrixXd traj = generate_traj(input);
+    std::cout << traj << std::endl;
+
     return 0;
 }
