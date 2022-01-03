@@ -44,7 +44,7 @@ private:
     double dt = tf/NSeg; // time step
     MatrixXd Q; // running cost matrix on states
     MatrixXd R; // running cost matrix on controls
-    MatrixXd Qf; // terminal cost matrix on states (or state errors)
+    MatrixXd Qf; // terminal cost matrix on states
     f_out f_func(func_in in_struct); // dynamics
     L_out L_func(func_in in_struct); // loss
 
@@ -63,15 +63,28 @@ public:
     f_out f(func_in in_struct) {return f_func(in_struct);}
     // publicly call the loss
     L_out L(func_in in_struct) {return L_func(in_struct);}
+
     // setters
     void setTf(double new_tf) {tf = new_tf; dt=tf/NSeg;}
     void setNSeg(int new_N) {NSeg = new_N; dt=tf/NSeg;}
     void addObs(obstacle new_obs) {obs.push_back(new_obs);}
+    void setXd(VectorXd newXd) {xd = newXd;}
+    void setXmin(VectorXd newXmin) {xmin = newXmin;}
+    void setXmax(VectorXd newXmax) {xmax = newXmax;}
+    void setUmin(VectorXd newUmin) {umin = newUmin;}
+    void setUmax(VectorXd newUmax) {umax = newUmax;}
+    void setQ(MatrixXd newQ) {Q = newQ;}
+    void setQf(MatrixXd newQf) {Qf = newQf;}
+    void setR(MatrixXd newR) {R = newR;}
+
 
     // getters
     obstacle getObsAt(int i) {return obs.at(i);}
     int getNSeg() {return NSeg;}
     double getCH() {return Ceiling_H;}
+    MatrixXd getQ() {return Q;}
+    MatrixXd getQf() {return Qf;}
+    MatrixXd getR() {return R;}
 };
 
 // define input struct for generate_traj
