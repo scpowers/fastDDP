@@ -51,17 +51,19 @@ int main()
 
     // add an XY cylinder
     double loc1[3] = {-2, -3};
-    obstacle o1 = newXYCylinder("XYCylinder", loc1, 1);
+    double r1 = 1.0;
+    obstacle o1 = newXYCylinder("XYCylinder", loc1, r1);
     S.addObs(o1);
 
-    // testing trajectories
-    MatrixXd us(2, S.getNSeg() - 1);
-    us.setOnes();
-    traj_in input = {x0, us, S};
-    MatrixXd traj = generate_traj(input);
+    // define initial control sequence
+    MatrixXd us(umax.size(), S.getNSeg() - 1);
+    us.setZero();
 
-    // testing trajectory cost
-    traj_cost_in cost_in = {traj, us, S};
+    // trajectory and cost associated with initial control sequence
+    traj_in input = {x0, us, S};
+    MatrixXd xs = generate_traj(input);
+
+    traj_cost_in cost_in = {xs, us, S};
     double J = traj_cost(cost_in);
     cout << "sample trajectory cost: " << J << endl;
 
