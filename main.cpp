@@ -28,6 +28,7 @@ int main()
 
     // testing trajectories
     MatrixXd us(2, S.getNSeg() - 1);
+    us.setOnes();
     traj_in input = {x0, us, S};
     MatrixXd traj = generate_traj(input);
     std::cout << "sample trajectory:\n" << traj << std::endl;

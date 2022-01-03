@@ -36,8 +36,6 @@ struct obstacle {
     double r;
 };
 
-
-
 class System {
 private:
     double Ceiling_H = 3.5; // ceiling height
