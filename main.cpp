@@ -72,14 +72,13 @@ int main()
     plt::Plot plot;
     VectorXd time_vec(S.getNSeg());
     time_vec.setLinSpaced(S.getNSeg(), 0, S.getTf());
-    plot.drawCurveFilled(xs.row(0), xs.row(1));
+    plot.drawCurve(xs.row(0), xs.row(1));
     plot.xlabel("x");
     plot.ylabel("y");
-    plot.xrange(-6, 3);
-    plot.yrange(-6, 3);
+    plot.xrange(-10, 10);
+    plot.yrange(-10, 10);
     plot.fontName("Palatino");
     plot.show();
-
 
     return 0;
 }
