@@ -12,3 +12,5 @@ why it appears to only run the backward pass once (although with a new
 while loop inside of it), yet the forward pass is iterated multiple times.
 
 ### TODO
+* Implement Dr. Kobilarov's DDP
+* Implement DDP from notes
