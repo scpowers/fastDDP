@@ -1,4 +1,5 @@
 #include "System.h"
+#include <cmath>
 #include <iostream>
 
 // dynamics definition
@@ -85,8 +86,26 @@ L_out System::L_func(func_in in_struct)
             {
                 // just interested in xy geometric difference, no z for now
                 VectorXd g = in_struct.x.head(2) - o.loc.head(2);
+                double c = o.r - g.norm();
+                if (c >= 0) // meaning a collision has occurred
+                {
+                    L = L + 0.5*ko*pow(c,2);
+                    VectorXd v = g/g.norm();
+                    Lx.head(2) = Lx.head(2) - ko*c*v;
+                    Lxx.block(0,0,2,2) = Lxx.block(0,0,2,2) + ko*v*v.transpose();
+                }
             }
         }
+    }
+
+    // now penalize state constraint infractions
+    for (int i = 0; i < xmin.size(); i++)
+    {
+        if (in_struct.x(i) < xmin(i))
+            L = L + lambda*(xmin(i) - in_struct.x(i));
+        else if (in_struct.x(i) > xmax(i))
+            L = L + lambda*(in_struct.x(i) - xmax(i));
+        else {}
     }
 
     // initialize and populate returned struct
