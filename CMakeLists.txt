@@ -13,5 +13,5 @@ include_directories(src)
 find_package(sciplot)
 
 add_executable(fastDDP
-        main.cpp src/System.cpp includes/System.h src/util.cpp includes/util.h src/ddp_engine.cpp includes/ddp_engine.h)
+        main.cpp src/System.cpp includes/System.h src/util.cpp includes/util.h src/DDP_Engine.cpp includes/DDP_Engine.h)
 target_link_libraries(fastDDP sciplot::sciplot)
