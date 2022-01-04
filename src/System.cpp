@@ -1,4 +1,5 @@
 #include "System.h"
+#include <iostream>
 
 // dynamics definition
 f_out System::f_func(func_in in_struct)
@@ -48,7 +49,38 @@ f_out System::f_func(func_in in_struct)
 // loss function definition
 L_out System::L_func(func_in in_struct)
 {
+    VectorXd xfError(in_struct.x.size());
+    double L;
+    VectorXd Lx(in_struct.x.size());
+    MatrixXd Lxx(in_struct.x.size(), in_struct.x.size());
+    VectorXd Lu(in_struct.u.size());
+    MatrixXd Luu(in_struct.u.size(), in_struct.u.size());
+    if (in_struct.k == NSeg + 1)
+    {
+        xfError = in_struct.x - xd;
+        std::cout << Qf*xfError << std::endl;
+        L = 0.5*xfError.transpose()*Qf*xfError;
+        Lx = Qf*xfError;
+        Lxx = Qf;
+        Lu.setZero();
+        Luu.setZero();
+    }
+    else
+    {
+        L = in_struct.x.transpose()*Q*in_struct.x;
+        L = L + in_struct.u.transpose()*R*in_struct.u;
+        L = L * 0.5 * dt;
+        Lx = dt*Q*in_struct.x;
+        Lxx = dt*Q;
+        Lu = dt*R*in_struct.u;
+        Luu = dt*R;
+    }
+
     L_out ret;
-    ret.L = in_struct.u.sum();
+    ret.L = L;
+    ret.Lx = Lx;
+    ret.Lxx = Lxx;
+    ret.Lu = Lu;
+    ret.Luu = Luu;
     return ret;
 }

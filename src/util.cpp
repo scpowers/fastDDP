@@ -43,7 +43,7 @@ double traj_cost(traj_cost_in in_struct)
             in = {k, in_struct.xs.col(k), in_struct.us.col(k)};
         else // after the last control signal
         {
-            VectorXd u(in_struct.xs.col(k).size());
+            VectorXd u(in_struct.us.col(0).size());
             u.setZero();
             in = {k, in_struct.xs.col(k), u};
         }

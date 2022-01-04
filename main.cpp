@@ -19,7 +19,7 @@ int main()
     // setting time horizon and discretization
     System S;
     S.setTf(40);
-    S.setNSeg(64);
+    S.setNSeg(4);
 
     // define state and control vectors
     VectorXd x0 {{-5, -5, 2.8, 0, 0, 0, 0, pi}};
@@ -78,7 +78,7 @@ int main()
     plot.xrange(-10, 10);
     plot.yrange(-10, 10);
     plot.fontName("Palatino");
-    plot.show();
+    //plot.show();
 
     return 0;
 }
