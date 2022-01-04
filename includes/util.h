@@ -3,10 +3,11 @@
 #include "System.h"
 
 using Eigen::MatrixXd;
+using Eigen::VectorXd;
 
-obstacle newOverheadHemisphere(std::string, double[], double, System);
+obstacle newOverheadHemisphere(VectorXd, double, System);
 
-obstacle newXYCylinder(std::string, double[], double);
+obstacle newXYCylinder(VectorXd, double);
 
 MatrixXd generate_traj(traj_in);
 

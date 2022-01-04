@@ -1,17 +1,24 @@
 #include "util.h"
 #include <iterator>
+#include <string>
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
 
-obstacle newOverheadHemisphere(std::string str, double loc[], double r, System S)
+obstacle newOverheadHemisphere(VectorXd loc, double r, System S)
 {
-    obstacle obs = {str, {loc[0], loc[1], S.getCH()}, r};
+    std::string str = "OverheadHemisphere";
+    VectorXd newVec(3);
+    newVec << loc(0), loc(1), S.getCH();
+    obstacle obs = {str, newVec, r};
     return obs;
 }
 
-obstacle newXYCylinder(std::string str, double loc[], double r)
+obstacle newXYCylinder(VectorXd loc, double r)
 {
-    obstacle obs = {str, {loc[0], loc[1], 0.0}, r};
+    std::string str = "XYCylinder";
+    VectorXd newVec(3);
+    newVec << loc(0), loc(1), 0.0;
+    obstacle obs = {str, newVec, r};
     return obs;
 }
 

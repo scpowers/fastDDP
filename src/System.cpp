@@ -55,7 +55,7 @@ L_out System::L_func(func_in in_struct)
     MatrixXd Lxx(in_struct.x.size(), in_struct.x.size());
     VectorXd Lu(in_struct.u.size());
     MatrixXd Luu(in_struct.u.size(), in_struct.u.size());
-    if (in_struct.k == NSeg + 1)
+    if (in_struct.k == NSeg + 1) // add terminal cost if at end
     {
         xfError = in_struct.x - xd;
         std::cout << Qf*xfError << std::endl;
@@ -65,7 +65,7 @@ L_out System::L_func(func_in in_struct)
         Lu.setZero();
         Luu.setZero();
     }
-    else
+    else // accumulate running cost if en route
     {
         L = in_struct.x.transpose()*Q*in_struct.x;
         L = L + in_struct.u.transpose()*R*in_struct.u;
@@ -76,6 +76,20 @@ L_out System::L_func(func_in in_struct)
         Luu = dt*R;
     }
 
+    // now add quadratic penalty term for obstacle collisions
+    if (!obs.empty()) // if you have obstacles, that is
+    {
+        for (auto o : obs) // loop over obstacles
+        {
+            if (o.type.compare("XYCylinder") == 0)
+            {
+                // just interested in xy geometric difference, no z for now
+                VectorXd g = in_struct.x.head(2) - o.loc.head(2);
+            }
+        }
+    }
+
+    // initialize and populate returned struct
     L_out ret;
     ret.L = L;
     ret.Lx = Lx;

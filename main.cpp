@@ -52,9 +52,10 @@ int main()
     S.setR(R);
 
     // add an XY cylinder
-    double loc1[3] = {-2, -3};
+    VectorXd loc1(2);
+    loc1 << -2, -3;
     double r1 = 1.0;
-    obstacle o1 = newXYCylinder("XYCylinder", loc1, r1);
+    obstacle o1 = newXYCylinder(loc1, r1);
     S.addObs(o1);
 
     // define initial control sequence

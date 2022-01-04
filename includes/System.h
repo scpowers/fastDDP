@@ -1,6 +1,7 @@
 #ifndef FASTDDP_SYSTEM_H
 #define FASTDDP_SYSTEM_H
 #include <Eigen/Dense>
+#include <string>
 #include <vector>
 
 using Eigen::MatrixXd;
@@ -32,7 +33,7 @@ struct L_out {
 // define struct to hold obstacles
 struct obstacle {
     std::string type;
-    double loc[3];
+    VectorXd loc;
     double r;
 };
 
