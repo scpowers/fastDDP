@@ -70,6 +70,7 @@ int main()
     double J = traj_cost(cost_in);
     cout << "sample trajectory cost: " << J << endl;
 
+    // plot x and y over the trajectory
     plt::Plot plot;
     VectorXd time_vec(S.getNSeg());
     time_vec.setLinSpaced(S.getNSeg(), 0, S.getTf());

@@ -56,10 +56,9 @@ L_out System::L_func(func_in in_struct)
     MatrixXd Lxx(in_struct.x.size(), in_struct.x.size());
     VectorXd Lu(in_struct.u.size());
     MatrixXd Luu(in_struct.u.size(), in_struct.u.size());
-    if (in_struct.k == NSeg + 1) // add terminal cost if at end
+    if (in_struct.k == NSeg - 1) // add terminal cost if at end
     {
         xfError = in_struct.x - xd;
-        std::cout << Qf*xfError << std::endl;
         L = 0.5*xfError.transpose()*Qf*xfError;
         Lx = Qf*xfError;
         Lxx = Qf;
