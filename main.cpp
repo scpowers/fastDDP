@@ -70,6 +70,15 @@ int main()
     cout << "sample trajectory cost: " << J << endl;
 
     plt::Plot plot;
+    VectorXd time_vec(S.getNSeg());
+    time_vec.setLinSpaced(S.getNSeg(), 0, S.getTf());
+    plot.drawCurveFilled(xs.row(0), xs.row(1));
+    plot.xlabel("x");
+    plot.ylabel("y");
+    plot.xrange(-6, 3);
+    plot.yrange(-6, 3);
+    plot.fontName("Palatino");
+    plot.show();
 
 
     return 0;

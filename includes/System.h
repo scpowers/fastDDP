@@ -81,6 +81,7 @@ public:
     // getters
     obstacle getObsAt(int i) {return obs.at(i);}
     int getNSeg() {return NSeg;}
+    double getTf() {return tf;}
     double getCH() {return Ceiling_H;}
     MatrixXd getQ() {return Q;}
     MatrixXd getQf() {return Qf;}
