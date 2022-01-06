@@ -7,6 +7,7 @@
 #include <sciplot/sciplot.hpp>
 #include "includes/System.h"
 #include "includes/util.h"
+#include "DDP_Engine.h"
 
 using std::cout;
 using std::endl;
@@ -68,8 +69,14 @@ int main()
 
     traj_cost_in cost_in = {xs, us, S};
     double J = traj_cost(cost_in);
-    cout << "sample trajectory cost: " << J << endl;
+    cout << "initial trajectory cost: " << J << endl;
 
+    DDP_Engine ddp;
+    ddp_out ddpOut = ddp.run(input);
+
+
+
+    /*
     // plot x and y over the trajectory
     plt::Plot plot;
     VectorXd time_vec(S.getNSeg());
@@ -80,7 +87,8 @@ int main()
     plot.xrange(-10, 10);
     plot.yrange(-10, 10);
     plot.fontName("Palatino");
-    //plot.show();
+    plot.show();
+    */
 
     return 0;
 }

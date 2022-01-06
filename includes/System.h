@@ -48,7 +48,6 @@ protected:
     MatrixXd Qf; // terminal cost matrix on states
     f_out f_func(func_in in_struct); // dynamics
     L_out L_func(func_in in_struct); // loss
-
     double mu = 0;
     VectorXd xd; // desired states at end
     VectorXd xmin; // minimum values for states
@@ -84,9 +83,9 @@ public:
     int getNSeg() {return NSeg;}
     double getTf() {return tf;}
     double getCH() {return Ceiling_H;}
-    MatrixXd getQ() {return Q;}
-    MatrixXd getQf() {return Qf;}
-    MatrixXd getR() {return R;}
+    double getMu() {return mu;}
+    VectorXd getumin() {return umin;}
+    VectorXd getumax() {return umax;}
 };
 
 // define input struct for generate_traj
