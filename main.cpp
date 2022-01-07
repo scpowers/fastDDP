@@ -5,8 +5,8 @@
 #include <iostream>
 #include <Eigen/Dense>
 #include <sciplot/sciplot.hpp>
-#include "includes/System.h"
-#include "includes/util.h"
+#include "System.h"
+#include "util.h"
 #include "DDP_Engine.h"
 
 using std::cout;
