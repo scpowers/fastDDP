@@ -20,7 +20,7 @@ int main()
     // setting time horizon and discretization
     System S;
     S.setTf(40);
-    S.setNSeg(3);
+    S.setNSeg(64);
 
     // define state and control vectors
     VectorXd x0 {{-5, -5, 2.8, 0, 0, 0, 0, pi}};
@@ -82,6 +82,7 @@ int main()
     {
         traj_in ddp_in = {x0, us, S};
         ddp_out ddpOut = ddp.run(ddp_in);
+        ddp.setA(ddpOut.a);
         //cout << "\n" << ddpOut.V << endl;
         //cout << "\n" << ddpOut.Vn << endl;
         //cout << "\n" << ddpOut.a << endl;

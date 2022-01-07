@@ -37,13 +37,14 @@ protected:
     double mu0 = 1e-3;
     double dmu0 = 2;
     double mumax = 1e6;
-    double a = 1;
+    double a = -1;
     double amin = 1e-32;
 
 public:
     ddp_out run(traj_in); // main function called on DDP_engine object
     // add backward pass func called inside run
     // add forward pass func called inside run
+    void setA(double newA) {a = newA;}
 };
 
 

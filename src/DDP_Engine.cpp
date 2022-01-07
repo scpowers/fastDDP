@@ -15,6 +15,8 @@ ddp_out DDP_Engine::run(traj_in in_struct)
     int n = in_struct.x0.size();
     int m = in_struct.us.rows();
     int N = in_struct.us.cols();
+    if (a == -1) // if not yet used
+        a = 1;
 
     //MatrixXd Ps(n, n, N+1); // Eigen 3D matrix (?) or arr of mats
     std::vector<MatrixXd> Ps; // quantity N+1 of nxn matrices
@@ -88,6 +90,7 @@ ddp_out DDP_Engine::run(traj_in in_struct)
 
             Eigen::LLT<MatrixXd> lltOfQuum(Quum);
             F = lltOfQuum.matrixL();
+            F.transposeInPlace(); // experimental
 
             if (lltOfQuum.info() == Eigen::Success)
             {
@@ -115,7 +118,7 @@ ddp_out DDP_Engine::run(traj_in in_struct)
         MatrixXd tmp1(Qu.size(), Qux.cols()+1);
         tmp1 << Qu, Qux;
         MatrixXd tmp2 = F.transpose().colPivHouseholderQr().solve(tmp1);
-        MatrixXd cD = -1*F.colPivHouseholderQr().solve(tmp2);
+        MatrixXd cD = -1.0*F.colPivHouseholderQr().solve(tmp2);
         VectorXd c = cD.col(0);
         // debug
         //cout << c << "\n" << endl;
