@@ -20,7 +20,7 @@ int main()
     // setting time horizon and discretization
     System S;
     S.setTf(40);
-    S.setNSeg(64);
+    S.setNSeg(3);
 
     // define state and control vectors
     VectorXd x0 {{-5, -5, 2.8, 0, 0, 0, 0, pi}};
@@ -60,7 +60,7 @@ int main()
     S.addObs(o1);
 
     // define initial control sequence
-    MatrixXd us(umax.size(), S.getNSeg() - 1);
+    MatrixXd us(umax.size(), S.getNSeg());
     us.setZero();
 
     // trajectory and cost associated with initial control sequence
@@ -77,7 +77,7 @@ int main()
     // plot x and y over the trajectory
     plt::Plot plot;
     VectorXd time_vec(S.getNSeg());
-    time_vec.setLinSpaced(S.getNSeg(), 0, S.getTf());
+    time_vec.setLinSpaced(S.getNSeg()+1, 0, S.getTf());
     for (int i = 0; i < numRuns; i++)
     {
         traj_in ddp_in = {x0, us, S};
@@ -89,7 +89,7 @@ int main()
         //cout << "\n" << ddpOut.dus << endl;
 
         // update controls
-        cout << "\n*******************************" << endl;
+        //cout << "\n*******************************" << endl;
         us = us + ddpOut.dus;
         //cout << "us: " << us << "\n" << endl;
         // update trajectory
@@ -128,13 +128,13 @@ int main()
 
     // plot controls over time
     plt::Plot plot3;
-    plot3.drawCurve(time_vec, us.row(0)).label("ua");
-    plot3.drawCurve(time_vec, us.row(1)).label("ud");
-    plot3.drawCurve(time_vec, us.row(2)).label("uz");
-    plot3.drawCurve(time_vec, us.row(3)).label("uphi");
+    plot3.drawCurve(time_vec.head(us.row(0).size()), us.row(0)).label("ua");
+    plot3.drawCurve(time_vec.head(us.row(0).size()), us.row(1)).label("ud");
+    plot3.drawCurve(time_vec.head(us.row(0).size()), us.row(2)).label("uz");
+    plot3.drawCurve(time_vec.head(us.row(0).size()), us.row(3)).label("uphi");
     plot3.xlabel("time");
     plot3.ylabel("u");
-    plot3.xrange(0.0, S.getTf());
+    plot3.xrange(0.0, S.getTf()-1);
     plot3.fontName("Palatino");
     plot3.show();
 

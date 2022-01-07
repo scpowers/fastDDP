@@ -118,7 +118,7 @@ ddp_out DDP_Engine::run(traj_in in_struct)
         MatrixXd cD = -1*F.colPivHouseholderQr().solve(tmp2);
         VectorXd c = cD.col(0);
         // debug
-        cout << c << "\n" << endl;
+        //cout << c << "\n" << endl;
         MatrixXd D = cD.bottomRightCorner(cD.rows(), cD.cols()-1);
 
         v = Qx + D.transpose()*Qu;

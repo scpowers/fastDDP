@@ -24,10 +24,10 @@ obstacle newXYCylinder(VectorXd loc, double r)
 
 MatrixXd generate_traj(traj_in in_struct)
 {
-    MatrixXd xs(in_struct.x0.size(), in_struct.S.getNSeg()); // initialize xs
+    MatrixXd xs(in_struct.x0.size(), in_struct.S.getNSeg()+1); // initialize xs
     xs.col(0) = in_struct.x0; // know x0 already, fill in rest of time steps
 
-    int N = in_struct.S.getNSeg() - 1;
+    int N = in_struct.S.getNSeg();
     for (int i = 0; i < N; i++)
     {
         func_in in = {0, xs.col(i), in_struct.us.col(i)};
@@ -43,10 +43,10 @@ double traj_cost(traj_cost_in in_struct)
     double J = 0; // initialize cost
     int NSeg = in_struct.S.getNSeg();
 
-    for (int k = 0; k < NSeg; k++)
+    for (int k = 0; k < NSeg+1; k++)
     {
         func_in in;
-        if (k < NSeg-1) // when a control signal exists
+        if (k < NSeg) // when a control signal exists
             in = {k, in_struct.xs.col(k), in_struct.us.col(k)};
         else // after the last control signal
         {
