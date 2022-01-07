@@ -27,9 +27,9 @@ int main()
     cout << "x0:\n" << x0.transpose() << endl;
     VectorXd xd {{4, 0, 3, 0, 0, 0, 0, pi/2}};
     S.setXd(xd);
-    VectorXd xmin {{-10, -10, 1, -2*pi, -5, -2*pi, -1, -2*pi}};
+    VectorXd xmin {{-10, -10, 1, -pi, -1, -pi, -1, -pi}};
     S.setXmin(xmin);
-    VectorXd xmax {{10, 10, S.getCH(), 2*pi, 5, 2*pi, 1, 2*pi}};
+    VectorXd xmax {{10, 10, S.getCH(), pi, 1, pi, 1, pi}};
     S.setXmax(xmax);
     VectorXd umin {{-0.1, -0.1, -0.5, -0.1}};
     S.setUmin(umin);
@@ -74,19 +74,24 @@ int main()
     DDP_Engine ddp;
     int numRuns = 50;
     VectorXd JVec(numRuns);
+    // plot x and y over the trajectory
+    plt::Plot plot;
+    VectorXd time_vec(S.getNSeg());
+    time_vec.setLinSpaced(S.getNSeg(), 0, S.getTf());
     for (int i = 0; i < numRuns; i++)
     {
         traj_in ddp_in = {x0, us, S};
         ddp_out ddpOut = ddp.run(ddp_in);
-        //cout << "V: " << ddpOut.V << endl;
-        //cout << "Vn: " << ddpOut.Vn << endl;
-        //cout << "a: " << ddpOut.a << endl;
-        //cout << "dV: " << ddpOut.dV << endl;
-        //cout << "dus: " << ddpOut.dus << endl;
+        //cout << "\n" << ddpOut.V << endl;
+        //cout << "\n" << ddpOut.Vn << endl;
+        //cout << "\n" << ddpOut.a << endl;
+        //cout << "\n" << ddpOut.dV << endl;
+        //cout << "\n" << ddpOut.dus << endl;
 
         // update controls
+        cout << "\n*******************************" << endl;
         us = us + ddpOut.dus;
-
+        //cout << "us: " << us << "\n" << endl;
         // update trajectory
         traj_in newTraj = {x0, us, S};
         xs = generate_traj(newTraj);
@@ -94,20 +99,21 @@ int main()
         // compute and store cost for this run
         traj_cost_in newTrajCostIn = {xs, us, S};
         JVec(i) = traj_cost(newTrajCostIn);
+
+        // update plot
+        plot.drawCurve(xs.row(0), xs.row(1)).lineColor("blue");
     }
 
     cout << "optimal cost:" << JVec(numRuns-1) << endl;
 
-    // plot x and y over the trajectory
-    plt::Plot plot;
-    VectorXd time_vec(S.getNSeg());
-    time_vec.setLinSpaced(S.getNSeg(), 0, S.getTf());
-    plot.drawCurve(xs.row(0), xs.row(1));
+    // draw optimal trajectory
+    plot.drawCurve(xs.row(0), xs.row(1)).lineColor("green");
     plot.xlabel("x");
     plot.ylabel("y");
     plot.xrange(-6, 4);
     plot.yrange(-6, 1);
     plot.fontName("Palatino");
+    plot.legend().hide();
     plot.show();
 
     // plot z over time
@@ -117,6 +123,7 @@ int main()
     plot2.ylabel("z");
     plot2.xrange(0.0, S.getTf());
     plot2.fontName("Palatino");
+    plot2.legend().hide();
     plot2.show();
 
     // plot controls over time

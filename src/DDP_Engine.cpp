@@ -117,6 +117,8 @@ ddp_out DDP_Engine::run(traj_in in_struct)
         MatrixXd tmp2 = F.transpose().colPivHouseholderQr().solve(tmp1);
         MatrixXd cD = -1*F.colPivHouseholderQr().solve(tmp2);
         VectorXd c = cD.col(0);
+        // debug
+        cout << c << "\n" << endl;
         MatrixXd D = cD.bottomRightCorner(cD.rows(), cD.cols()-1);
 
         v = Qx + D.transpose()*Qu;
@@ -167,6 +169,10 @@ ddp_out DDP_Engine::run(traj_in in_struct)
 
             VectorXd du = a*c + D*dx;
             //cout << du << "\n" << endl;
+            //cout << a << "\n" << endl;
+            //cout << c << "\n" << endl;
+            //cout << D << "\n" << endl;
+            //cout << dx << "\n" << endl;
             VectorXd un = u + du;
             //cout << un << "\n" << endl;
 
@@ -219,8 +225,15 @@ ddp_out DDP_Engine::run(traj_in in_struct)
 
         // terminal cost update
         VectorXd dummyU(in_struct.us.col(0).size());
+        dummyU.setZero();
         func_in LIn = {N, xn, dummyU};
+        //cout << xn << "\n" << endl;
         LOut = in_struct.S.L(LIn);
+        //cout << LOut.Lx << "\n" << endl;
+        //cout << LOut.Lxx << "\n" << endl;
+        //cout << LOut.Lu << "\n" << endl;
+        //cout << LOut.Luu << "\n" << endl;
+
         Vn = Vn + LOut.L;
 
         dVm = Vn - V;
@@ -236,6 +249,7 @@ ddp_out DDP_Engine::run(traj_in in_struct)
 
         VectorXd avec(2);
         avec << a, a*a;
+        //cout << avec << "\n" << endl;
         double dVp = avec.transpose()*dV;
 
         double r = dVm / dVp;
