@@ -1,10 +1,14 @@
 #include "DDP_Engine.h"
 #include <vector>
 #include <algorithm>
+#include <iostream>
 #include <Eigen/Cholesky>
 
 using std::min;
 using std::max;
+
+using std::cout;
+using std::endl;
 
 ddp_out DDP_Engine::run(traj_in in_struct)
 {
@@ -14,7 +18,8 @@ ddp_out DDP_Engine::run(traj_in in_struct)
 
     //MatrixXd Ps(n, n, N+1); // Eigen 3D matrix (?) or arr of mats
     std::vector<MatrixXd> Ps; // quantity N+1 of nxn matrices
-    for (int i = 0; i < N+1; i++) {
+    for (int i = 0; i < N+1; i++)
+    {
         MatrixXd tmp(n, n);
         tmp.setZero();
         Ps.push_back(tmp);
@@ -24,7 +29,8 @@ ddp_out DDP_Engine::run(traj_in in_struct)
     MatrixXd cs(m, N);
     cs.setZero();
     std::vector<MatrixXd> Ds; // quantity N of mxn matrices
-    for (int i = 0; i < N; i++) {
+    for (int i = 0; i < N; i++)
+    {
         MatrixXd tmp(m,n);
         tmp.setZero();
         Ds.push_back(tmp);
@@ -136,6 +142,7 @@ ddp_out DDP_Engine::run(traj_in in_struct)
     // measured change in V
     double eps = 2.2e-16;
     double dVm = eps;
+    double Vn;
     while (dVm > 0)
     {
         // variation
@@ -146,17 +153,22 @@ ddp_out DDP_Engine::run(traj_in in_struct)
         VectorXd xn = in_struct.x0;
 
         // new measured cost
-        double Vn = 0;
+        Vn = 0;
 
         for (int k = 0; k < N; k++)
         {
             VectorXd u = in_struct.us.col(k);
+            //cout << u << "\n" << endl;
 
             VectorXd c = cs.col(k);
+            //cout << c << "\n" << endl;
             MatrixXd D = Ds.at(k);
+            //cout << D << "\n" << endl;
 
             VectorXd du = a*c + D*dx;
+            //cout << du << "\n" << endl;
             VectorXd un = u + du;
+            //cout << un << "\n" << endl;
 
             int temp = un.size();
 
@@ -176,15 +188,30 @@ ddp_out DDP_Engine::run(traj_in in_struct)
                 }
                 else {}
             }
+            //cout << un << "\n" << endl;
+            //cout << du << "\n" << endl;
 
+            //cout << xn << "\n" << endl;
+            //cout << un << "\n" << endl;
             func_in LIn = {k, xn, un};
             LOut = in_struct.S.L(LIn);
+            //cout << LOut.Lx << "\n" << endl;
+            //cout << LOut.Lxx << "\n" << endl;
+            //cout << LOut.Lu << "\n" << endl;
+            //cout << LOut.Luu << "\n" << endl;
 
             f_out fOut = in_struct.S.f(LIn);
+            xn = fOut.x; // update xn
+            //cout << fOut.A << "\n" << endl;
+            //cout << fOut.B << "\n" << endl;
+            //cout << fOut.x << "\n" << endl;
+
 
             dx = xn - xs.col(k+1);
+            //cout << dx << "\n" << endl;
 
             Vn = Vn + LOut.L;
+            //cout << Vn << "\n" << endl;
 
             dus.col(k) = du;
 
@@ -192,7 +219,7 @@ ddp_out DDP_Engine::run(traj_in in_struct)
 
         // terminal cost update
         VectorXd dummyU(in_struct.us.col(0).size());
-        func_in LIn = {N+1, xn, dummyU};
+        func_in LIn = {N, xn, dummyU};
         LOut = in_struct.S.L(LIn);
         Vn = Vn + LOut.L;
 
@@ -221,7 +248,12 @@ ddp_out DDP_Engine::run(traj_in in_struct)
                 a = b2*a;
         }
     }
+    //cout << dus << endl;
+    //cout << V << endl;
+    //cout << Vn << endl;
+    //cout << dV << endl;
+    //cout << a << endl;
 
-    ddp_out ret;
+    ddp_out ret = {dus, V, Vn, dV, a};
     return ret;
 }

@@ -20,7 +20,7 @@ int main()
     // setting time horizon and discretization
     System S;
     S.setTf(40);
-    S.setNSeg(4);
+    S.setNSeg(64);
 
     // define state and control vectors
     VectorXd x0 {{-5, -5, 2.8, 0, 0, 0, 0, pi}};
@@ -72,11 +72,32 @@ int main()
     cout << "initial trajectory cost: " << J << endl;
 
     DDP_Engine ddp;
-    ddp_out ddpOut = ddp.run(input);
+    int numRuns = 50;
+    VectorXd JVec(numRuns);
+    for (int i = 0; i < numRuns; i++)
+    {
+        traj_in ddp_in = {x0, us, S};
+        ddp_out ddpOut = ddp.run(ddp_in);
+        //cout << "V: " << ddpOut.V << endl;
+        //cout << "Vn: " << ddpOut.Vn << endl;
+        //cout << "a: " << ddpOut.a << endl;
+        //cout << "dV: " << ddpOut.dV << endl;
+        //cout << "dus: " << ddpOut.dus << endl;
 
+        // update controls
+        us = us + ddpOut.dus;
 
+        // update trajectory
+        traj_in newTraj = {x0, us, S};
+        xs = generate_traj(newTraj);
 
-    /*
+        // compute and store cost for this run
+        traj_cost_in newTrajCostIn = {xs, us, S};
+        JVec(i) = traj_cost(newTrajCostIn);
+    }
+
+    cout << "optimal cost:" << JVec(numRuns-1) << endl;
+
     // plot x and y over the trajectory
     plt::Plot plot;
     VectorXd time_vec(S.getNSeg());
@@ -84,11 +105,32 @@ int main()
     plot.drawCurve(xs.row(0), xs.row(1));
     plot.xlabel("x");
     plot.ylabel("y");
-    plot.xrange(-10, 10);
-    plot.yrange(-10, 10);
+    plot.xrange(-6, 4);
+    plot.yrange(-6, 1);
     plot.fontName("Palatino");
     plot.show();
-    */
+
+    // plot z over time
+    plt::Plot plot2;
+    plot2.drawCurve(time_vec, xs.row(2));
+    plot2.xlabel("time");
+    plot2.ylabel("z");
+    plot2.xrange(0.0, S.getTf());
+    plot2.fontName("Palatino");
+    plot2.show();
+
+    // plot controls over time
+    plt::Plot plot3;
+    plot3.drawCurve(time_vec, us.row(0)).label("ua");
+    plot3.drawCurve(time_vec, us.row(1)).label("ud");
+    plot3.drawCurve(time_vec, us.row(2)).label("uz");
+    plot3.drawCurve(time_vec, us.row(3)).label("uphi");
+    plot3.xlabel("time");
+    plot3.ylabel("u");
+    plot3.xrange(0.0, S.getTf());
+    plot3.fontName("Palatino");
+    plot3.show();
+
 
     return 0;
 }
