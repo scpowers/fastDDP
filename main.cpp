@@ -83,16 +83,10 @@ int main()
         traj_in ddp_in = {x0, us, S};
         ddp_out ddpOut = ddp.run(ddp_in);
         ddp.setA(ddpOut.a);
-        //cout << "\n" << ddpOut.V << endl;
-        //cout << "\n" << ddpOut.Vn << endl;
-        //cout << "\n" << ddpOut.a << endl;
-        //cout << "\n" << ddpOut.dV << endl;
-        //cout << "\n" << ddpOut.dus << endl;
 
         // update controls
-        //cout << "\n*******************************" << endl;
         us = us + ddpOut.dus;
-        //cout << "us: " << us << "\n" << endl;
+
         // update trajectory
         traj_in newTraj = {x0, us, S};
         xs = generate_traj(newTraj);

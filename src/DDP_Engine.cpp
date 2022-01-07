@@ -18,7 +18,6 @@ ddp_out DDP_Engine::run(traj_in in_struct)
     if (a == -1) // if not yet used
         a = 1;
 
-    //MatrixXd Ps(n, n, N+1); // Eigen 3D matrix (?) or arr of mats
     std::vector<MatrixXd> Ps; // quantity N+1 of nxn matrices
     for (int i = 0; i < N+1; i++)
     {
@@ -90,7 +89,7 @@ ddp_out DDP_Engine::run(traj_in in_struct)
 
             Eigen::LLT<MatrixXd> lltOfQuum(Quum);
             F = lltOfQuum.matrixL();
-            F.transposeInPlace(); // experimental
+            F.transposeInPlace();
 
             if (lltOfQuum.info() == Eigen::Success)
             {
@@ -120,8 +119,6 @@ ddp_out DDP_Engine::run(traj_in in_struct)
         MatrixXd tmp2 = F.transpose().colPivHouseholderQr().solve(tmp1);
         MatrixXd cD = -1.0*F.colPivHouseholderQr().solve(tmp2);
         VectorXd c = cD.col(0);
-        // debug
-        //cout << c << "\n" << endl;
         MatrixXd D = cD.bottomRightCorner(cD.rows(), cD.cols()-1);
 
         v = Qx + D.transpose()*Qu;
@@ -136,7 +133,6 @@ ddp_out DDP_Engine::run(traj_in in_struct)
 
         cs.col(k) = c;
         Ds.at(k) = D;
-
     }
 
     double s1 = 0.1;
@@ -163,21 +159,12 @@ ddp_out DDP_Engine::run(traj_in in_struct)
         for (int k = 0; k < N; k++)
         {
             VectorXd u = in_struct.us.col(k);
-            //cout << u << "\n" << endl;
 
             VectorXd c = cs.col(k);
-            //cout << c << "\n" << endl;
             MatrixXd D = Ds.at(k);
-            //cout << D << "\n" << endl;
 
             VectorXd du = a*c + D*dx;
-            //cout << du << "\n" << endl;
-            //cout << a << "\n" << endl;
-            //cout << c << "\n" << endl;
-            //cout << D << "\n" << endl;
-            //cout << dx << "\n" << endl;
             VectorXd un = u + du;
-            //cout << un << "\n" << endl;
 
             int temp = un.size();
 
@@ -197,30 +184,16 @@ ddp_out DDP_Engine::run(traj_in in_struct)
                 }
                 else {}
             }
-            //cout << un << "\n" << endl;
-            //cout << du << "\n" << endl;
 
-            //cout << xn << "\n" << endl;
-            //cout << un << "\n" << endl;
             func_in LIn = {k, xn, un};
             LOut = in_struct.S.L(LIn);
-            //cout << LOut.Lx << "\n" << endl;
-            //cout << LOut.Lxx << "\n" << endl;
-            //cout << LOut.Lu << "\n" << endl;
-            //cout << LOut.Luu << "\n" << endl;
 
             f_out fOut = in_struct.S.f(LIn);
             xn = fOut.x; // update xn
-            //cout << fOut.A << "\n" << endl;
-            //cout << fOut.B << "\n" << endl;
-            //cout << fOut.x << "\n" << endl;
-
 
             dx = xn - xs.col(k+1);
-            //cout << dx << "\n" << endl;
 
             Vn = Vn + LOut.L;
-            //cout << Vn << "\n" << endl;
 
             dus.col(k) = du;
 
@@ -230,12 +203,7 @@ ddp_out DDP_Engine::run(traj_in in_struct)
         VectorXd dummyU(in_struct.us.col(0).size());
         dummyU.setZero();
         func_in LIn = {N, xn, dummyU};
-        //cout << xn << "\n" << endl;
         LOut = in_struct.S.L(LIn);
-        //cout << LOut.Lx << "\n" << endl;
-        //cout << LOut.Lxx << "\n" << endl;
-        //cout << LOut.Lu << "\n" << endl;
-        //cout << LOut.Luu << "\n" << endl;
 
         Vn = Vn + LOut.L;
 
@@ -252,7 +220,6 @@ ddp_out DDP_Engine::run(traj_in in_struct)
 
         VectorXd avec(2);
         avec << a, a*a;
-        //cout << avec << "\n" << endl;
         double dVp = avec.transpose()*dV;
 
         double r = dVm / dVp;
@@ -265,11 +232,6 @@ ddp_out DDP_Engine::run(traj_in in_struct)
                 a = b2*a;
         }
     }
-    //cout << dus << endl;
-    //cout << V << endl;
-    //cout << Vn << endl;
-    //cout << dV << endl;
-    //cout << a << endl;
 
     ddp_out ret = {dus, V, Vn, dV, a};
     return ret;
