@@ -1,16 +1,9 @@
 # fastDDP
+Second-order numerical optimal control. This is a C++ implementation
+of a differential dynamic programming (DDP) code originally written
+in MATLAB by Dr. Marin Kobilarov for the course EN.530.603 - Applied Optimal
+Control at Johns Hopkins University.
 
-### Notes
-* Need System class to store S attributes
-* DDP.m is just a function to define, same with ddp cost and ddp trajectory
-* Need main file that has main func, makes an S object and calls these funcs
-* ddp.m appears to just return the optimal computed control deviations from
-the input control sequence. This is effectively just one iteration of DDP.
-Each trajectory that we saw before is really an iteration, not a candidate
-trajectory, and the optimal trajectory is just the last one. This might be
-why it appears to only run the backward pass once (although with a new
-while loop inside of it), yet the forward pass is iterated multiple times.
-
-### TODO
-* Implement Dr. Kobilarov's DDP
-* Implement DDP from notes
+This code was developed purely to sharpen my own understanding of C++ and
+differential dynamic programming, and is thus solely for educational purposes.
+All credit goes to Dr. Kobilarov.
