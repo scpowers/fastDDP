@@ -80,6 +80,7 @@ public:
 
     // getters
     obstacle getObsAt(int i) {return obs.at(i);}
+    int getNumObs() {return obs.size();}
     int getNSeg() {return NSeg;}
     double getTf() {return tf;}
     double getCH() {return Ceiling_H;}

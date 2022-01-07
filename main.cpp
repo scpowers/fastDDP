@@ -5,6 +5,8 @@
 #include <iostream>
 #include <Eigen/Dense>
 #include <sciplot/sciplot.hpp>
+#include <algorithm>
+#include <cmath>
 #include "System.h"
 #include "util.h"
 #include "DDP_Engine.h"
@@ -103,6 +105,24 @@ int main()
 
     // draw optimal trajectory
     plot.drawCurve(xs.row(0), xs.row(1)).lineColor("green");
+    // draw obstacles
+    VectorXd radVec(30);
+    radVec.setLinSpaced(0, 2*pi);
+    for (int i = 0; i < S.getNumObs(); i++)
+    {
+        VectorXd p = S.getObsAt(i).loc;
+        double radius = S.getObsAt(i).r;
+        VectorXd xc(radVec.size());
+        VectorXd yc(radVec.size());
+        for (int j = 0; j < 30; j++)
+        {
+            xc(j) = p(0) + radius*std::cos(radVec(j));
+            yc(j) = p(1) + radius*std::sin(radVec(j));
+
+        }
+        plot.drawCurve(xc, yc).lineColor("black");
+    }
+
     plot.xlabel("x");
     plot.ylabel("y");
     plot.xrange(-6, 4);
