@@ -1,7 +1,7 @@
 # fastDDP
 ### Optimal control of a mobile manipulator with 3D obstacle avoidance.
 
-This is a C++ implementation of my course project for EN.530.603 - Applied Optimal Control.
+This is a C++ implementation of my course project for EN.530.603 - Applied Optimal Control, which was originally written in MATLAB.
 
 Note: this project includes my own C++ implementation of a differential dynamic programming (DDP) code originally written
 in MATLAB by Dr. Marin Kobilarov (marin(at)jhu.edu).
