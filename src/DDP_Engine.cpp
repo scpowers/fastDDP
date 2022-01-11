@@ -1,14 +1,10 @@
 #include "DDP_Engine.h"
 #include <vector>
 #include <algorithm>
-#include <iostream>
 #include <Eigen/Cholesky>
 
 using std::min;
 using std::max;
-
-using std::cout;
-using std::endl;
 
 ddp_out DDP_Engine::run(traj_in in_struct)
 {
