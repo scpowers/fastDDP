@@ -6,6 +6,10 @@
 using std::min;
 using std::max;
 
+/*
+ * Returns optimal control deviations du and updated optimal cost
+ * after one iteration of the DDP algorithm (not returning converged values)
+ */
 ddp_out DDP_Engine::run(traj_in in_struct)
 {
     int n = in_struct.x0.size();
@@ -74,7 +78,7 @@ ddp_out DDP_Engine::run(traj_in in_struct)
         double mu = in_struct.S.getMu();
         double dmu = 1;
 
-        // now for while loop
+        // regularization while loop to ensure Quu > 0
         bool done = true;
         MatrixXd F;
         while (done == true)
@@ -140,6 +144,8 @@ ddp_out DDP_Engine::run(traj_in in_struct)
     double eps = 2.2e-16;
     double dVm = eps;
     double Vn;
+
+    // while loop to optimize step size (a) during forward pass
     while (dVm > 0)
     {
         // variation
@@ -152,6 +158,7 @@ ddp_out DDP_Engine::run(traj_in in_struct)
         // new measured cost
         Vn = 0;
 
+        // begin forward pass
         for (int k = 0; k < N; k++)
         {
             VectorXd u = in_struct.us.col(k);
