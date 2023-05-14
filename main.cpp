@@ -77,7 +77,7 @@ int main()
     int numRuns = 50;
     VectorXd JVec(numRuns);
     // plot x and y over the trajectory
-    plt::Plot plot;
+    plt::Plot2D plot;
     VectorXd time_vec(S.getNSeg());
     time_vec.setLinSpaced(S.getNSeg()+1, 0, S.getTf());
     for (int i = 0; i < numRuns; i++)
@@ -129,20 +129,26 @@ int main()
     plot.yrange(-6, 1);
     plot.fontName("Palatino");
     plot.legend().hide();
-    plot.show();
+
+    plt::Figure fig = {{plot}};
+    plt::Canvas canvas = {{fig}};
+    canvas.show();
 
     // plot z over time
-    plt::Plot plot2;
+    plt::Plot2D plot2;
     plot2.drawCurve(time_vec, xs.row(2));
     plot2.xlabel("time");
     plot2.ylabel("z");
     plot2.xrange(0.0, S.getTf());
     plot2.fontName("Palatino");
     plot2.legend().hide();
-    plot2.show();
+
+    fig = {{plot2}};
+    canvas = {{fig}};
+    canvas.show();
 
     // plot controls over time
-    plt::Plot plot3;
+    plt::Plot2D plot3;
     plot3.drawCurve(time_vec.head(us.row(0).size()), us.row(0)).label("ua");
     plot3.drawCurve(time_vec.head(us.row(0).size()), us.row(1)).label("ud");
     plot3.drawCurve(time_vec.head(us.row(0).size()), us.row(2)).label("uz");
@@ -151,7 +157,10 @@ int main()
     plot3.ylabel("u");
     plot3.xrange(0.0, S.getTf()-1);
     plot3.fontName("Palatino");
-    plot3.show();
+
+    fig = {{plot3}};
+    canvas = {{fig}};
+    canvas.show();
 
 
     return 0;
